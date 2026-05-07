@@ -1,0 +1,19 @@
+[Unit]
+Description=Briefing-Trigger MQTT Listener (claude/briefing/kamen/request -> claude -p briefing-agent)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=claude
+Group=claude
+WorkingDirectory=/home/claude
+EnvironmentFile=/etc/claude-secrets/briefing-trigger.env
+ExecStart=/usr/bin/python3 /home/claude/services/briefing_trigger.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

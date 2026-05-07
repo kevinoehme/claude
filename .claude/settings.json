@@ -1,0 +1,20 @@
+{
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true,
+  "permissions": {
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/claude/.claude/hooks/architecture_diagram_reminder.py"
+          }
+        ]
+      }
+    ]
+  }
+}

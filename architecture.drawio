@@ -1,0 +1,189 @@
+<mxfile host="Electron" modified="2026-05-07T00:00:00.000Z" agent="claude-code" version="24.0.0">
+  <diagram name="Architektur" id="arch">
+    <mxGraphModel dx="1400" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Architektur: Claude Code Workspace (/home/claude)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="10" width="600" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="user" value="USER&#10;(Kiebitzweg 12, 59174 Kamen)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="600" y="60" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cc" value="Claude Code (CLI Host)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="200" y="150" width="1000" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="main" value="Main Session&#10;LLM: Claude Opus 4.7&#10;(interaktive CLI)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="260" y="200" width="280" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="brief" value="Subagent: briefing-agent&#10;LLM: Claude Haiku&#10;(Wetter + Abfall + Mail → Alexa)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="860" y="200" width="280" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="weather" value="weather.py&#10;━━━━━━━━━━&#10;get_weather&#10;get_weather_history&#10;get_forecast_history" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="abfall" value="abfall.py&#10;━━━━━━━━━━&#10;get_next_pickup&#10;get_pickups&#10;get_pickups_by_type" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="290" y="380" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gmx" value="gmx_mail.py&#10;━━━━━━━━━━&#10;get_emails&#10;get_email_body&#10;(ad-hoc Lesen, 1-basiert)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="540" y="380" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mailcheck" value="mail_check.py&#10;━━━━━━━━━━&#10;get_new_emails&#10;reset_mail_baseline&#10;(UID-Polling)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="790" y="380" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mqtt" value="mqtt_notify.py&#10;━━━━━━━━━━&#10;send_notification&#10;send_notifications_multi&#10;(publish.single / multiple,&#10;one-shot connect)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="380" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dbpy" value="db.py — gemeinsames SQLite-Modul (init_db beim Import)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="970" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="openmeteo" value="Open-Meteo API&#10;(geocoding + forecast)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="620" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="regioit" value="regioit Abfall-API&#10;(GWA Kreis Unna)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="290" y="620" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="imap" value="IMAP imap.gmx.net:993&#10;(GMX_EMAIL / GMX_PASSWORD)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="600" y="620" width="290" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sqlite" value="SQLite — /home/claude/data/weather.db&#10;━━━━━━━━━━━━━━━━━━━━━&#10;locations · current_observations · daily_forecasts · hourly_forecasts&#10;abfall_pickups (UNIQUE pickup_date+fraktion_id, 24 h Cache)&#10;mail_state (PK account, last_seen_uid)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="730" width="850" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="broker" value="MQTT Broker&#10;(Mosquitto, extern)&#10;━━━━━━━━━━━━━&#10;claude/briefing/kamen (retain=false, sofort sprechen)&#10;claude/briefing/kamen/text (retain=true, Cache)&#10;claude/briefing/kamen/request (Trigger HA→Claude)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="520" width="300" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ha" value="Home Assistant&#10;━━━━━━━━━━━━━&#10;MQTT-Sub claude/briefing/kamen → TTS sofort&#10;MQTT-Sensor briefing_kamen ← /text (retained)&#10;Alexa Routine 'Briefing' → Skript briefing_speak&#10;→ notify.alexa_media liest sensor on-demand" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="650" width="300" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="alexa" value="Alexa Echo Dot&#10;(Sprachausgabe + Trigger-Phrase 'Briefing')" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="770" width="300" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="services" value="Services (systemd)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#a08040;verticalAlign=top;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="800" y="15" width="320" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="trigger" value="briefing-trigger&#10;━━━━━━━━━━━━━━━━━━&#10;persistent mqtt.Client loop&#10;subscribed claude/briefing/kamen/request&#10;→ subprocess: claude -p (headless)&#10;→ spawnt briefing-agent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="820" y="45" width="280" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="e_trigger_brief" value="claude -p" style="endArrow=classic;html=1;fontSize=9;dashed=1;" edge="1" parent="1" source="trigger" target="brief">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_broker_trigger" value="claude/briefing/kamen/request" style="endArrow=classic;html=1;fontSize=9;dashed=1;strokeColor=#9673a6;" edge="1" parent="1" source="broker" target="trigger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_alexa_ha" value="voice trigger" style="endArrow=classic;html=1;fontSize=9;dashed=1;strokeColor=#9673a6;" edge="1" parent="1" source="alexa" target="ha">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ha_broker" value="publish claude/briefing/kamen/request" style="endArrow=classic;html=1;fontSize=9;dashed=1;strokeColor=#9673a6;" edge="1" parent="1" source="ha" target="broker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cron_container" value="System Cron (user crontab)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#a08040;verticalAlign=top;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="860" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cron_record" value="cron_record.py&#10;━━━━━━━━━━━━━━━━━&#10;hourly @ :05 (5 * * * *)&#10;Open-Meteo → SQLite (Backfill)&#10;loggt /home/claude/data/cron.log" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="890" width="280" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cron_om" value="HTTPS" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="cron_record" target="openmeteo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cron_db" style="endArrow=classic;html=1;strokeColor=#666666;" edge="1" parent="1" source="cron_record" target="sqlite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="Legende:  gelb = User · blau = LLM/Agent · grün = MCP-Server / Standalone-Skript · orange = External API · grau = Storage · lila = Notification-Pipeline&#10;Container:  blau = Claude Code (CLI Host) · beige = systemd Services / System Cron&#10;Edge:  durchgezogen = Main Session ↔ MCP · gestrichelt blau = briefing-agent ↔ MCP-Subset · gestrichelt lila = Trigger-/Antwort-Pipeline" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="970" width="1220" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_user_main" value="Prompt" style="endArrow=classic;html=1;fontSize=10;" edge="1" parent="1" source="user" target="main">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_brief" value="spawn (Agent tool)" style="endArrow=classic;html=1;fontSize=10;" edge="1" parent="1" source="main" target="brief">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_main_w" value="MCP/stdio" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="main" target="weather">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_a" style="endArrow=classic;html=1;" edge="1" parent="1" source="main" target="abfall">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_g" style="endArrow=classic;html=1;" edge="1" parent="1" source="main" target="gmx">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_mc" style="endArrow=classic;html=1;" edge="1" parent="1" source="main" target="mailcheck">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_mq" style="endArrow=classic;html=1;" edge="1" parent="1" source="main" target="mqtt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_b_w" style="endArrow=classic;html=1;dashed=1;strokeColor=#10739e;" edge="1" parent="1" source="brief" target="weather">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b_a" style="endArrow=classic;html=1;dashed=1;strokeColor=#10739e;" edge="1" parent="1" source="brief" target="abfall">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b_mc" style="endArrow=classic;html=1;dashed=1;strokeColor=#10739e;" edge="1" parent="1" source="brief" target="mailcheck">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b_mq" style="endArrow=classic;html=1;dashed=1;strokeColor=#10739e;" edge="1" parent="1" source="brief" target="mqtt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_w_om" value="HTTPS" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="weather" target="openmeteo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_re" value="HTTPS" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="abfall" target="regioit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g_imap" value="IMAPS" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="gmx" target="imap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_mc_imap" value="IMAPS" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="mailcheck" target="imap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_w_db" style="endArrow=classic;html=1;strokeColor=#666666;" edge="1" parent="1" source="weather" target="sqlite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_db" style="endArrow=classic;html=1;strokeColor=#666666;" edge="1" parent="1" source="abfall" target="sqlite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_mc_db" style="endArrow=classic;html=1;strokeColor=#666666;" edge="1" parent="1" source="mailcheck" target="sqlite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_mq_b" value="publish" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="mqtt" target="broker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_b_ha" value="subscribe" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="broker" target="ha">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ha_a" value="TTS" style="endArrow=classic;html=1;fontSize=9;" edge="1" parent="1" source="ha" target="alexa">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

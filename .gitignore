@@ -1,0 +1,62 @@
+# /home/claude ist gleichzeitig Workspace UND $HOME — daher Whitelist statt Blacklist:
+# alles standardmäßig ignorieren, dann gezielt erlauben. Schützt zuverlässig vor
+# versehentlichem Committen von Secrets in .bashrc, .claude.json, .ssh/, etc.
+
+# Default: alles ignorieren
+/*
+/.*
+
+# Whitelist Top-Level-Files
+!/.gitignore
+!/CLAUDE.md
+!/BACKLOG.md
+!/BACKLOG-ARCHIVE.md
+!/architecture.drawio
+!/architecture.svg
+
+# Whitelist Top-Level-Dirs
+!/mcp/
+!/services/
+!/tools/
+!/.claude/
+
+# Innerhalb /.claude/ selektiv: nur agents/ + Repo-settings, KEIN local/projects/plugins
+/.claude/*
+!/.claude/agents/
+!/.claude/settings.json
+
+# data/ wird NICHT eingecheckt (lokale SQLite, Logs, Caches)
+# (durch /* oben schon ausgeschlossen — hier nur zur Doku)
+
+# Secret-Stores (zur Sicherheit explizit, auch wenn Whitelist sie schon ausschließt):
+.bashrc
+.bash_history
+.bash_logout
+.profile
+.claude.json
+.claude.json.bak.*
+.ssh/
+.cache/
+.local/
+.npm/
+.config/
+.sudo_as_admin_successful
+
+# settings.local.json ist Konvention für persönliche/Maschinen-Overrides → nie ins Repo
+.claude/settings.local.json
+
+# Python-Artefakte
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Backup-Dateien (entstehen z.B. bei sync_anthropic_key.sh)
+*.bak
+*.bak.*
+
+# Editor-/OS-Crud
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

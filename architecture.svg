@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1100" width="1400" height="1100" font-family="Helvetica,Arial,sans-serif">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 Z" fill="#444"/>
+</marker>
+</defs>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="200.0" y="150.0" width="1000.0" height="160.0" rx="0" ry="0" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="700.0" y="167.0" font-size="13.0" font-weight="bold" text-anchor="middle" fill="black">
+<tspan x="700.0">Claude Code (CLI Host)</tspan>
+</text>
+<text x="700.0" y="34.0" font-size="18.0" font-weight="bold" text-anchor="middle" fill="black">
+<tspan x="700.0">Architektur: Claude Code Workspace (/home/claude)</tspan>
+</text>
+<rect x="600.0" y="60.0" width="200.0" height="50.0" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+<text x="700.0" y="83.5" font-size="12.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="700.0">USER</tspan>
+<tspan x="700.0" dy="15.0">(Kiebitzweg 12, 59174 Kamen)</tspan>
+</text>
+<rect x="260.0" y="200.0" width="280.0" height="90.0" rx="8" ry="8" fill="#b1ddf0" stroke="#10739e" stroke-width="1.5"/>
+<text x="400.0" y="236.75" font-size="11.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="400.0">Main Session</tspan>
+<tspan x="400.0" dy="13.75">LLM: Claude Opus 4.7</tspan>
+<tspan x="400.0" dy="13.75">(interaktive CLI)</tspan>
+</text>
+<rect x="860.0" y="200.0" width="280.0" height="90.0" rx="8" ry="8" fill="#b1ddf0" stroke="#10739e" stroke-width="1.5"/>
+<text x="1000.0" y="236.75" font-size="11.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="1000.0">Subagent: briefing-agent</tspan>
+<tspan x="1000.0" dy="13.75">LLM: Claude Haiku</tspan>
+<tspan x="1000.0" dy="13.75">(Wetter + Abfall + Mail → Alexa)</tspan>
+</text>
+<rect x="40.0" y="380.0" width="220.0" height="120.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="150.0" y="420.0" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="150.0">weather.py</tspan>
+<tspan x="150.0" dy="12.5">━━━━━━━━━━</tspan>
+<tspan x="150.0" dy="12.5">get_weather</tspan>
+<tspan x="150.0" dy="12.5">get_weather_history</tspan>
+<tspan x="150.0" dy="12.5">get_forecast_history</tspan>
+</text>
+<rect x="290.0" y="380.0" width="220.0" height="120.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="400.0" y="420.0" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="400.0">abfall.py</tspan>
+<tspan x="400.0" dy="12.5">━━━━━━━━━━</tspan>
+<tspan x="400.0" dy="12.5">get_next_pickup</tspan>
+<tspan x="400.0" dy="12.5">get_pickups</tspan>
+<tspan x="400.0" dy="12.5">get_pickups_by_type</tspan>
+</text>
+<rect x="540.0" y="380.0" width="220.0" height="120.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="650.0" y="420.0" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="650.0">gmx_mail.py</tspan>
+<tspan x="650.0" dy="12.5">━━━━━━━━━━</tspan>
+<tspan x="650.0" dy="12.5">get_emails</tspan>
+<tspan x="650.0" dy="12.5">get_email_body</tspan>
+<tspan x="650.0" dy="12.5">(ad-hoc Lesen, 1-basiert)</tspan>
+</text>
+<rect x="790.0" y="380.0" width="220.0" height="120.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="900.0" y="420.0" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="900.0">mail_check.py</tspan>
+<tspan x="900.0" dy="12.5">━━━━━━━━━━</tspan>
+<tspan x="900.0" dy="12.5">get_new_emails</tspan>
+<tspan x="900.0" dy="12.5">reset_mail_baseline</tspan>
+<tspan x="900.0" dy="12.5">(UID-Polling)</tspan>
+</text>
+<rect x="1040.0" y="380.0" width="220.0" height="120.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1150.0" y="413.75" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="1150.0">mqtt_notify.py</tspan>
+<tspan x="1150.0" dy="12.5">━━━━━━━━━━</tspan>
+<tspan x="1150.0" dy="12.5">send_notification</tspan>
+<tspan x="1150.0" dy="12.5">send_notifications_multi</tspan>
+<tspan x="1150.0" dy="12.5">(publish.single / multiple,</tspan>
+<tspan x="1150.0" dy="12.5">one-shot connect)</tspan>
+</text>
+<rect x="40.0" y="540.0" width="970.0" height="30.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="525.0" y="560.0" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="525.0">db.py — gemeinsames SQLite-Modul (init_db beim Import)</tspan>
+</text>
+<rect x="40.0" y="620.0" width="220.0" height="70.0" rx="0" ry="0" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="150.0" y="653.75" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="150.0">Open-Meteo API</tspan>
+<tspan x="150.0" dy="12.5">(geocoding + forecast)</tspan>
+</text>
+<rect x="290.0" y="620.0" width="220.0" height="70.0" rx="0" ry="0" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="400.0" y="653.75" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="400.0">regioit Abfall-API</tspan>
+<tspan x="400.0" dy="12.5">(GWA Kreis Unna)</tspan>
+</text>
+<rect x="600.0" y="620.0" width="290.0" height="70.0" rx="0" ry="0" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="745.0" y="653.75" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="745.0">IMAP imap.gmx.net:993</tspan>
+<tspan x="745.0" dy="12.5">(GMX_EMAIL / GMX_PASSWORD)</tspan>
+</text>
+<rect x="40.0" y="730.0" width="850.0" height="110.0" rx="0" ry="0" fill="#f5f5f5" stroke="#666666" stroke-width="1.5"/>
+<text x="465.0" y="765.0" font-size="10.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="465.0">SQLite — /home/claude/data/weather.db</tspan>
+<tspan x="465.0" dy="12.5">━━━━━━━━━━━━━━━━━━━━━</tspan>
+<tspan x="465.0" dy="12.5">locations · current_observations · daily_forecasts · hourly_forecasts</tspan>
+<tspan x="465.0" dy="12.5">abfall_pickups (UNIQUE pickup_date+fraktion_id, 24 h Cache)</tspan>
+<tspan x="465.0" dy="12.5">mail_state (PK account, last_seen_uid)</tspan>
+</text>
+<rect x="1000.0" y="520.0" width="300.0" height="115.0" rx="0" ry="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="1150.0" y="553.875" font-size="9.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="1150.0">MQTT Broker</tspan>
+<tspan x="1150.0" dy="11.25">(Mosquitto, extern)</tspan>
+<tspan x="1150.0" dy="11.25">━━━━━━━━━━━━━</tspan>
+<tspan x="1150.0" dy="11.25">claude/briefing/kamen (retain=false, sofort sprechen)</tspan>
+<tspan x="1150.0" dy="11.25">claude/briefing/kamen/text (retain=true, Cache)</tspan>
+<tspan x="1150.0" dy="11.25">claude/briefing/kamen/request (Trigger HA→Claude)</tspan>
+</text>
+<rect x="1000.0" y="650.0" width="300.0" height="100.0" rx="0" ry="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="1150.0" y="676.375" font-size="9.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="1150.0">Home Assistant</tspan>
+<tspan x="1150.0" dy="11.25">━━━━━━━━━━━━━</tspan>
+<tspan x="1150.0" dy="11.25">MQTT-Sub claude/briefing/kamen → TTS sofort</tspan>
+<tspan x="1150.0" dy="11.25">MQTT-Sensor briefing_kamen ← /text (retained)</tspan>
+<tspan x="1150.0" dy="11.25">Alexa Routine 'Briefing' → Skript briefing_speak</tspan>
+<tspan x="1150.0" dy="11.25">→ notify.alexa_media liest sensor on-demand</tspan>
+</text>
+<rect x="1000.0" y="770.0" width="300.0" height="60.0" rx="0" ry="0" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="1150.0" y="798.875" font-size="9.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="1150.0">Alexa Echo Dot</tspan>
+<tspan x="1150.0" dy="11.25">(Sprachausgabe + Trigger-Phrase 'Briefing')</tspan>
+</text>
+<rect x="800.0" y="15.0" width="320.0" height="130.0" rx="0" ry="0" fill="#fff8e1" stroke="#a08040" stroke-width="1.5"/>
+<text x="960.0" y="32.0" font-size="13.0" font-weight="bold" text-anchor="middle" fill="black">
+<tspan x="960.0">Services (systemd)</tspan>
+</text>
+<rect x="820.0" y="45.0" width="280.0" height="95.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="960.0" y="68.875" font-size="9.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="960.0">briefing-trigger</tspan>
+<tspan x="960.0" dy="11.25">━━━━━━━━━━━━━━━━━━</tspan>
+<tspan x="960.0" dy="11.25">persistent mqtt.Client loop</tspan>
+<tspan x="960.0" dy="11.25">subscribed claude/briefing/kamen/request</tspan>
+<tspan x="960.0" dy="11.25">→ subprocess: claude -p (headless)</tspan>
+<tspan x="960.0" dy="11.25">→ spawnt briefing-agent</tspan>
+</text>
+<rect x="40.0" y="860.0" width="320.0" height="90.0" rx="0" ry="0" fill="#fff8e1" stroke="#a08040" stroke-width="1.5"/>
+<text x="200.0" y="877.0" font-size="13.0" font-weight="bold" text-anchor="middle" fill="black">
+<tspan x="200.0">System Cron (user crontab)</tspan>
+</text>
+<rect x="60.0" y="890.0" width="280.0" height="55.0" rx="0" ry="0" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="200.0" y="899.5" font-size="9.0" font-weight="normal" text-anchor="middle" fill="black">
+<tspan x="200.0">cron_record.py</tspan>
+<tspan x="200.0" dy="11.25">━━━━━━━━━━━━━━━━━</tspan>
+<tspan x="200.0" dy="11.25">hourly @ :05 (5 * * * *)</tspan>
+<tspan x="200.0" dy="11.25">Open-Meteo → SQLite (Backfill)</tspan>
+<tspan x="200.0" dy="11.25">loggt /home/claude/data/cron.log</tspan>
+</text>
+<text x="46.0" y="997.5" font-size="10.0" font-weight="normal" text-anchor="start" fill="black">
+<tspan x="46.0">Legende:  gelb = User · blau = LLM/Agent · grün = MCP-Server / Standalone-Skript · orange = External API · grau = Storage · lila = Notification-Pipeline</tspan>
+<tspan x="46.0" dy="12.5">Container:  blau = Claude Code (CLI Host) · beige = systemd Services / System Cron</tspan>
+<tspan x="46.0" dy="12.5">Edge:  durchgezogen = Main Session ↔ MCP · gestrichelt blau = briefing-agent ↔ MCP-Subset · gestrichelt lila = Trigger-/Antwort-Pipeline</tspan>
+</text>
+<line x1="972.4590163934427" y1="140.0" x2="988.1967213114754" y2="200.0" stroke="#666" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<rect x="955.052868852459" y="164.5" width="50.550000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="980.327868852459" y="173.0" font-size="9.0" text-anchor="middle" fill="#666">claude -p</text>
+<line x1="1127.4742268041236" y1="520.0" x2="978.6082474226804" y2="140.0" stroke="#9673a6" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<rect x="978.2662371134021" y="324.5" width="149.55" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="1053.041237113402" y="333.0" font-size="9.0" text-anchor="middle" fill="#9673a6">claude/briefing/kamen/request</text>
+<line x1="1150.0" y1="770.0" x2="1150.0" y2="750.0" stroke="#9673a6" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<rect x="1114.825" y="754.5" width="70.35000000000001" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="1150.0" y="763.0" font-size="9.0" text-anchor="middle" fill="#9673a6">voice trigger</text>
+<line x1="1150.0" y1="650.0" x2="1150.0" y2="635.0" stroke="#9673a6" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<rect x="1055.425" y="637.0" width="189.15" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="1150.0" y="645.5" font-size="9.0" text-anchor="middle" fill="#9673a6">publish claude/briefing/kamen/request</text>
+<line x1="194.76190476190476" y1="890.0" x2="156.66666666666666" y2="690.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="160.33928571428572" y="784.5" width="30.750000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="175.71428571428572" y="793.0" font-size="9.0" text-anchor="middle" fill="#666">HTTPS</text>
+<line x1="255.0" y1="890.0" x2="355.0" y2="840.0" stroke="#666666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="653.125" y1="110.0" x2="484.375" y2="200.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="549.25" y="149.0" width="39.0" height="12.0" fill="white" fill-opacity="0.9"/>
+<text x="568.75" y="158.33333333333334" font-size="10.0" text-anchor="middle" fill="#666">Prompt</text>
+<line x1="540.0" y1="245.0" x2="860.0" y2="245.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="647.5" y="239.0" width="105.00000000000001" height="12.0" fill="white" fill-opacity="0.9"/>
+<text x="700.0" y="248.33333333333334" font-size="10.0" text-anchor="middle" fill="#666">spawn (Agent tool)</text>
+<line x1="342.3076923076923" y1="290.0" x2="226.92307692307693" y2="380.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="259.34038461538466" y="329.5" width="50.550000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="284.61538461538464" y="338.0" font-size="9.0" text-anchor="middle" fill="#666">MCP/stdio</text>
+<line x1="400.0" y1="290.0" x2="400.0" y2="380.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="457.6923076923077" y1="290.0" x2="573.0769230769231" y2="380.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="515.3846153846154" y1="290.0" x2="790.0" y2="397.1" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="540.0" y1="281.4" x2="1040.0" y2="411.4" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="860.0" y1="277.11764705882354" x2="260.0" y2="414.7647058823529" stroke="#10739e" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<line x1="861.5384615384615" y1="290.0" x2="510.0" y2="404.25" stroke="#10739e" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<line x1="976.9230769230769" y1="290.0" x2="930.7692307692307" y2="380.0" stroke="#10739e" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<line x1="1034.6153846153845" y1="290.0" x2="1103.8461538461538" y2="380.0" stroke="#10739e" stroke-width="1.3" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<line x1="150.0" y1="500.0" x2="150.0" y2="620.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="134.625" y="554.5" width="30.750000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="150.0" y="563.0" font-size="9.0" text-anchor="middle" fill="#666">HTTPS</text>
+<line x1="400.0" y1="500.0" x2="400.0" y2="620.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="384.625" y="554.5" width="30.750000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="400.0" y="563.0" font-size="9.0" text-anchor="middle" fill="#666">HTTPS</text>
+<line x1="676.5116279069767" y1="500.0" x2="729.5348837209302" y2="620.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="687.6482558139535" y="554.5" width="30.750000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="703.0232558139535" y="563.0" font-size="9.0" text-anchor="middle" fill="#666">IMAPS</text>
+<line x1="856.7441860465117" y1="500.0" x2="770.2325581395348" y2="620.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="798.1133720930233" y="554.5" width="30.750000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="813.4883720930233" y="563.0" font-size="9.0" text-anchor="middle" fill="#666">IMAPS</text>
+<line x1="204.7826086956522" y1="500.0" x2="414.7826086956522" y2="730.0" stroke="#666666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="411.30434782608694" y1="500.0" x2="454.6376811594203" y2="730.0" stroke="#666666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="824.3478260869565" y1="500.0" x2="534.3478260869565" y2="730.0" stroke="#666666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="1150.0" y1="500.0" x2="1150.0" y2="520.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="1129.675" y="504.5" width="40.650000000000006" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="1150.0" y="513.0" font-size="9.0" text-anchor="middle" fill="#666">publish</text>
+<line x1="1150.0" y1="635.0" x2="1150.0" y2="650.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="1124.725" y="637.0" width="50.550000000000004" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="1150.0" y="645.5" font-size="9.0" text-anchor="middle" fill="#666">subscribe</text>
+<line x1="1150.0" y1="750.0" x2="1150.0" y2="770.0" stroke="#666" stroke-width="1.3" marker-end="url(#arrow)"/>
+<rect x="1139.575" y="754.5" width="20.85" height="11.0" fill="white" fill-opacity="0.9"/>
+<text x="1150.0" y="763.0" font-size="9.0" text-anchor="middle" fill="#666">TTS</text>
+</svg>
