@@ -31,10 +31,7 @@ sudo chown claude:claude /home/claude/mcp/gmx_mail.py
 
 ## ⚪ OPEN — eingeplant
 
-### N6 — Weitere Latenz-Hebel (low-prio, optional)
-- **Modell-Wechsel** briefing-agent: `sonnet` → `haiku` im Frontmatter `model:`-Zeile. Erwartet 5–10s schneller in Phase 4, aber Tonfall-Qualität testen.
-- **`--bare`-Modus** für `claude -p` mit expliziter MCP-Konfig — skippt CLAUDE.md-Auto-Discovery + hooks. Riskant (MCP-Konfig muss inline bereitgestellt werden), potenziell 5–10s.
-- **`--effort low`**: Anthropic-Reasoning-Tokens reduzieren. Schmaler Patch, ungewisser Gewinn.
+(leer)
 
 ---
 
@@ -42,6 +39,7 @@ sudo chown claude:claude /home/claude/mcp/gmx_mail.py
 
 (vollständige Historie → [`BACKLOG-ARCHIVE.md`](BACKLOG-ARCHIVE.md))
 
+- ✅ **2026-06-01** **N6 / Latenz-Track geschlossen** — Optimierung ausgereizt. Schlüssel-Erkenntnis: **User-wahrgenommene Latenz = Trigger → Push = ~23s** (Alexa spricht beim Push); die 10.4s „Cleanup" danach sind für die UX tote Zeit (nur für `_run_lock`/Overlap relevant). Restliche 95% sind Claude-Prozess-Overhead ohne einfachen Hebel — die UX-relevanten Kandidaten wären nur `model: haiku` (Generation 9.6s) bzw. `--bare` (Boot 12s), beide mit Qualitäts-/Risiko-Trade-off. Bewusst nicht weiterverfolgt.
 - ✅ **2026-06-01** **B3** — `briefing-trigger`-Service auf neuen Code (Subagent-Pattern, Hebel 2+3) umgestellt. Restart hat gegriffen (PID 7760 → 82964, ExecStart sauber ohne `--agent`-Flag).
 - ✅ **2026-06-01** **N5** — Hebel 3 gemessen (1 Live-Trigger): Phase 2 = 12.0s, Phase 3 = 1.5s, Phase 4 = 9.6s, Phase 6 = 10.4s, **Total 33.5s**. Δ vs. Hebel-2-only (32.6s) = +0.9s → **im Rauschen**, kein messbarer Gewinn. Hebel 3 bleibt drin (kürzerer Prompt, kostet nichts). Bestätigt: Tool-Calls = 4.5%, restliche 95% = Claude-Prozess-Overhead (Boot/Generation/Cleanup).
 - ✅ **2026-05-07** **Git-Setup** — Repo `kevinoehme/claude` initialisiert mit SSH-Auth (ed25519), Whitelist-`.gitignore` (schützt vor Secret-Leaks), README mit Komponenten-Übersicht. 24 Files initial gepusht.
