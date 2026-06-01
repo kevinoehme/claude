@@ -1,6 +1,6 @@
 # claude
 
-Persönlicher Claude-Code-Workspace für **Kiebitzweg, 59174 Kamen** (NRW).
+Persönlicher Claude-Code-Workspace für **Kamen, NRW (PLZ 59174)**.
 Kombiniert mehrere Custom-MCP-Server, einen Tagesbriefing-Subagent und einen
 MQTT-getriggerten systemd-Service zu einer Sprach-Pipeline:
 

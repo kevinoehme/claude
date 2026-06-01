@@ -1,0 +1,11 @@
+{
+  "_comment": "Lokale Adress-Config. Kopiere nach /home/claude/data/location.json und passe die Werte an. Wird NICHT ins Repo eingecheckt (data/ ist gitignored).",
+  "_abfall_street_id_howto": "Ermitteln via: curl https://abfallapp.regioit.de/abfall-app-unna/rest/orte (Ortsname suchen, ID merken) -> curl https://abfallapp.regioit.de/abfall-app-unna/rest/orte/<ORT_ID>/strassen (Straßenname suchen, ID merken).",
+
+  "street": "Musterstraße",
+  "house_number": "1",
+  "abfall": {
+    "street_id": 0,
+    "street_label": "Musterstraße, 59174 Kamen"
+  }
+}

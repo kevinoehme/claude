@@ -9,7 +9,7 @@
           <mxGeometry x="400" y="10" width="600" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="user" value="USER&#10;(Kiebitzweg 12, 59174 Kamen)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="user" value="USER&#10;(Kamen, 59174)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="600" y="60" width="200" height="50" as="geometry" />
         </mxCell>
 

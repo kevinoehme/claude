@@ -1,10 +1,15 @@
-"""Müllkalender für Kiebitzweg 12, 59174 Kamen.
+"""Müllkalender für Kamen (PLZ 59174).
 
 Nutzt die regioit-Abfall-API (GWA Kreis Unna). Cached die Termine in SQLite
 und refresht automatisch, wenn der Cache älter als 24 Stunden ist.
+
+Standort-spezifische Werte (Straße, street_id) werden aus
+/home/claude/data/location.json geladen — Template: mcp/location.json.example.
 """
 
+import json
 from datetime import datetime, date, timedelta
+from pathlib import Path
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -18,11 +23,22 @@ module_load("abfall")
 
 API_BASE = "https://abfallapp.regioit.de/abfall-app-unna/rest"
 
-# Hardcoded für Kiebitzweg 12, 59174 Kamen.
-# Ermittelt via /orte (Kamen=1039020) → /orte/1039020/strassen (Kiebitzweg=1039291).
-# Die Straße hat keine hausnummerngenaue Differenzierung (hausNrList=[]).
-STREET_ID = 1039291
-STREET_LABEL = "Kiebitzweg, 59174 Kamen"
+LOCATION_CONFIG_PATH = Path("/home/claude/data/location.json")
+
+
+def _load_location():
+    if not LOCATION_CONFIG_PATH.exists():
+        raise FileNotFoundError(
+            f"Standort-Config fehlt: {LOCATION_CONFIG_PATH}. "
+            "Kopiere /home/claude/mcp/location.json.example dorthin und passe die Werte an."
+        )
+    with LOCATION_CONFIG_PATH.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+_loc = _load_location()
+STREET_ID = _loc["abfall"]["street_id"]
+STREET_LABEL = _loc["abfall"]["street_label"]
 
 # Welche Fraktionen sind für die Tonnen des Users relevant.
 # Mapping fraktion_id (API) → (normalisierter Name, Anzeige-Name).
@@ -97,7 +113,7 @@ def _today_iso() -> str:
 @mcp.tool()
 @profile("abfall.get_next_pickup")
 def get_next_pickup() -> str:
-    """Nächste anstehende Müllabfuhr für Kiebitzweg, 59174 Kamen.
+    """Nächste anstehende Müllabfuhr für den in location.json konfigurierten Standort.
 
     Liefert Datum, Wochentag und welche Tonne(n) abgeholt werden.
     """
@@ -140,7 +156,7 @@ def get_next_pickup() -> str:
 @mcp.tool()
 @profile("abfall.get_pickups")
 def get_pickups(days: int = 14) -> str:
-    """Alle Müllabholungen in den nächsten N Tagen für Kiebitzweg, 59174 Kamen."""
+    """Alle Müllabholungen in den nächsten N Tagen für den in location.json konfigurierten Standort."""
     _refresh_if_stale()
     today = _today_iso()
 
