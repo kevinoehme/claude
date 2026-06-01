@@ -9,6 +9,8 @@
 # Whitelist Top-Level-Files
 !/.gitignore
 !/CLAUDE.md
+!/CLAUDE-*.md
+!/README.md
 !/BACKLOG.md
 !/BACKLOG-ARCHIVE.md
 !/architecture.drawio

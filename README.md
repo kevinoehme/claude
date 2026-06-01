@@ -43,9 +43,18 @@ Vollständiges Diagramm: [`architecture.svg`](architecture.svg)
 
 ## Doku & Status
 
-- **[`CLAUDE.md`](CLAUDE.md)** — vollständige technische Referenz: alle
-  Tools im Detail, Secrets-Strategie (3-Stores-Hybrid), Architektur-Pflege-Regel,
-  Validierungs-Workflow.
+Die technische Doku ist nach Themen getrennt, damit nicht jede Session
+den vollen Kontext nachlädt:
+
+- **[`CLAUDE.md`](CLAUDE.md)** — Einstieg für Claude Code: Workspace-Pitch,
+  Sessionstart-Regel, Secrets-Strategie (3-Stores-Hybrid), Adress-Privatsphäre,
+  Router auf die Detail-Files.
+- **[`CLAUDE-mcp.md`](CLAUDE-mcp.md)** — MCP-Server-Details (alle Tools,
+  Signaturen, DB-Schema, Cron-Hilfsskript, Working-on-MCP-Tipps).
+- **[`CLAUDE-services.md`](CLAUDE-services.md)** — systemd-Units,
+  Briefing-Trigger-Pipeline, `deploy-services.sh`, `sync_anthropic_key.sh`.
+- **[`CLAUDE-workflow.md`](CLAUDE-workflow.md)** — `briefing-agent`,
+  settings-Files, Architektur-Pflege-Regel, Diagramm-Renderer.
 - **[`BACKLOG.md`](BACKLOG.md)** — laufende Aufgaben mit Status (`BLOCKED` /
   `NEXT` / `OPEN` / `DONE`).
 - **[`BACKLOG-ARCHIVE.md`](BACKLOG-ARCHIVE.md)** — Historie erledigter Tasks.
