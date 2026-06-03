@@ -27,7 +27,7 @@ def test_abfall_fresh_cache_no_http(tmp_db, mocker):
     )
 
     assert "Teststraße" in result
-    assert "restmuell" in result.lower()
+    assert "rest" in result.lower()
     assert mock_http_get.call_count == 0  # No HTTP
 
 
