@@ -1,4 +1,5 @@
 import httpx
+from datetime import datetime, timedelta, timezone
 from mcp.server.fastmcp import FastMCP
 
 import db
@@ -7,6 +8,8 @@ from profiling import module_load, profile
 mcp = FastMCP("weather")
 db.init_db()
 module_load("weather")
+
+WEATHER_CACHE_MAX_AGE_MINUTES = 30
 
 WMO = {
     0: "Klar", 1: "Überwiegend klar", 2: "Teilweise bewölkt", 3: "Bedeckt",
@@ -22,13 +25,40 @@ WMO = {
 def wcode(code):
     return WMO.get(code, f"Code {code}")
 
-@mcp.tool()
-@profile("weather.get_weather")
-def get_weather(city: str, country: str = "DE", include_hourly: bool = False) -> str:
-    """Aktuelles Wetter + 3 und 7 Tage Vorhersage für eine Stadt. Mit include_hourly=True zusätzlich stündliche Vorhersage für heute."""
+def _cache_age_minutes(cached_at: str) -> float:
+    """Berechnet Alter einer Timestamp-String (ISO 8601) in Minuten."""
+    cached_dt = datetime.fromisoformat(cached_at.replace("Z", "+00:00"))
+    now_dt = datetime.now(timezone.utc)
+    return (now_dt - cached_dt).total_seconds() / 60
 
-    # Schritt 1: Stadt -> Koordinaten
-    geo = httpx.get(
+
+def get_weather_impl(
+    city: str,
+    country: str = "DE",
+    include_hourly: bool = False,
+    *,
+    http_get=None,
+    db_connect=None,
+) -> str:
+    """Aktuelles Wetter + 3 und 7 Tage Vorhersage für eine Stadt. Mit include_hourly=True zusätzlich stündliche Vorhersage für heute."""
+    http_get = http_get or httpx.get
+    db_connect = db_connect or db.connect
+
+    # Schritt 0: Geocoding-Cache + Response-Cache prüfen
+    with db_connect() as con:
+        loc = db.find_location(con, city, country)
+        if loc:
+            location_id, loc_name, loc_country, lat, lon = loc
+            # Response-Cache prüfen
+            cached = db.get_weather_cache(con, location_id, include_hourly)
+            if cached:
+                cached_at, response_text = cached
+                age = _cache_age_minutes(cached_at)
+                if age < WEATHER_CACHE_MAX_AGE_MINUTES:
+                    return response_text
+
+    # Schritt 1: Stadt -> Koordinaten (falls nicht in Cache)
+    geo = http_get(
         "https://geocoding-api.open-meteo.com/v1/search",
         params={"name": city, "count": 10, "language": "de"}
     ).json()
@@ -58,7 +88,7 @@ def get_weather(city: str, country: str = "DE", include_hourly: bool = False) ->
     if include_hourly:
         params["hourly"] = "temperature_2m,precipitation,weathercode,windspeed_10m"
 
-    weather = httpx.get("https://api.open-meteo.com/v1/forecast", params=params).json()
+    weather = http_get("https://api.open-meteo.com/v1/forecast", params=params).json()
 
     c = weather["current"]
     d = weather["daily"]
@@ -66,7 +96,7 @@ def get_weather(city: str, country: str = "DE", include_hourly: bool = False) ->
     # Persistieren — DB-Fehler dürfen den Tool-Aufruf nicht brechen
     try:
         fetched_at = db.now_iso()
-        with db.connect() as con:
+        with db_connect() as con:
             location_id = db.upsert_location(con, name, country.upper(), lat, lon)
             db.record_current(con, location_id, fetched_at, c)
             db.record_daily(con, location_id, fetched_at, d)
@@ -110,7 +140,21 @@ def get_weather(city: str, country: str = "DE", include_hourly: bool = False) ->
             hour = t.split("T")[1]
             result += f"{hour}:  {h['temperature_2m'][i]}°C  |  {wcode(h['weathercode'][i])}  |  🌧️ {h['precipitation'][i]} mm  |  💨 {h['windspeed_10m'][i]} km/h\n"
 
+    # Cache schreiben
+    try:
+        with db_connect() as con:
+            db.set_weather_cache(con, location_id, include_hourly, result)
+    except Exception as e:
+        print(f"[weather] Cache-Schreiben fehlgeschlagen: {e}")
+
     return result
+
+
+@mcp.tool()
+@profile("weather.get_weather")
+def get_weather(city: str, country: str = "DE", include_hourly: bool = False) -> str:
+    """Aktuelles Wetter + 3 und 7 Tage Vorhersage für eine Stadt. Mit include_hourly=True zusätzlich stündliche Vorhersage für heute."""
+    return get_weather_impl(city, country, include_hourly)
 
 @mcp.tool()
 @profile("weather.get_forecast_history")

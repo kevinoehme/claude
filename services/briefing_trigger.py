@@ -21,6 +21,7 @@ import logging
 import os
 import subprocess
 import threading
+import time
 
 import paho.mqtt.client as mqtt
 
@@ -43,17 +44,24 @@ PROMPT = (
     "Nutze den briefing-agent (Subagent) — er pusht das Ergebnis selbst per MQTT."
 )
 
+BRIEFING_COOLDOWN_SECONDS = 600
+
 _run_lock = threading.Lock()
+_last_briefing_ok = 0.0
 
 
 def _run_claude():
+    global _last_briefing_ok
+    if time.time() - _last_briefing_ok < BRIEFING_COOLDOWN_SECONDS:
+        log.info("trigger ignoriert — cooldown aktiv (letzte OK-Zeit: %.0f s ago)", time.time() - _last_briefing_ok)
+        return
     if not _run_lock.acquire(blocking=False):
         log.warning("trigger ignoriert — vorheriger Lauf noch aktiv")
         return
     try:
         log.info("starte claude -p (timeout=%ds)", TIMEOUT)
         result = subprocess.run(
-            [CLAUDE_BIN, "-p", PROMPT],
+            [CLAUDE_BIN, "--model", "claude-haiku-4-5-20251001", "-p", PROMPT],
             cwd=WORKDIR,
             timeout=TIMEOUT,
             capture_output=True,
@@ -63,7 +71,9 @@ def _run_claude():
             "claude rc=%d stdout=%dB stderr=%dB",
             result.returncode, len(result.stdout), len(result.stderr),
         )
-        if result.returncode != 0:
+        if result.returncode == 0:
+            _last_briefing_ok = time.time()
+        else:
             log.error("stderr (last 500B): %s", result.stderr[-500:])
             log.error("stdout (last 500B): %s", result.stdout[-500:])
     except subprocess.TimeoutExpired:

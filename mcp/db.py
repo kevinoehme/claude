@@ -87,6 +87,14 @@ CREATE TABLE IF NOT EXISTS mail_state (
     last_seen_uid INTEGER NOT NULL,
     updated_at    TEXT    NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS weather_cache (
+    location_id    INTEGER NOT NULL REFERENCES locations(id),
+    include_hourly INTEGER NOT NULL DEFAULT 0,
+    cached_at      TEXT    NOT NULL,
+    response_text  TEXT    NOT NULL,
+    PRIMARY KEY (location_id, include_hourly)
+);
 """
 
 
@@ -189,7 +197,7 @@ def record_hourly(con, location_id: int, fetched_at: str, hourly: dict):
 
 def find_location(con, name: str, country: str):
     return con.execute(
-        "SELECT id, name, country FROM locations "
+        "SELECT id, name, country, latitude, longitude FROM locations "
         "WHERE LOWER(name) = LOWER(?) AND UPPER(country) = UPPER(?) "
         "ORDER BY id LIMIT 1",
         (name, country),
@@ -304,3 +312,21 @@ def daily_aggregates(con, location_id: int, days: int):
            ORDER BY day DESC""",
         (location_id, f"-{days} days"),
     ).fetchall()
+
+
+def get_weather_cache(con, location_id: int, include_hourly: bool):
+    row = con.execute(
+        "SELECT cached_at, response_text FROM weather_cache "
+        "WHERE location_id = ? AND include_hourly = ?",
+        (location_id, 1 if include_hourly else 0),
+    ).fetchone()
+    return row if row else None
+
+
+def set_weather_cache(con, location_id: int, include_hourly: bool, response_text: str):
+    con.execute(
+        """INSERT OR REPLACE INTO weather_cache
+           (location_id, include_hourly, cached_at, response_text)
+           VALUES (?, ?, ?, ?)""",
+        (location_id, 1 if include_hourly else 0, now_iso(), response_text),
+    )

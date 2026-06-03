@@ -1,15 +1,18 @@
 import imaplib
 import email
 import os
+import sys
 from email.header import decode_header
 from mcp.server.fastmcp import FastMCP
+from profiling import module_load, profile
 
 mcp = FastMCP("email")
+module_load("email")
 
 IMAP_HOST = "imap.gmx.net"
 IMAP_PORT = 993
-EMAIL    = os.environ["GMX_EMAIL"]
-PASSWORD = os.environ["GMX_PASSWORD"]
+EMAIL    = os.environ.get("GMX_EMAIL", "")
+PASSWORD = os.environ.get("GMX_PASSWORD", "")
 
 def decode_str(value):
     if value is None:
@@ -23,11 +26,14 @@ def decode_str(value):
             result += part
     return result
 
-@mcp.tool()
-def get_emails(count: int = 10) -> str:
+def get_emails_impl(count: int = 10, *, imap_factory=None, email_account=None, password=None) -> str:
     """Letzte E-Mails aus dem GMX Posteingang abrufen"""
-    mail = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
-    mail.login(EMAIL, PASSWORD)
+    imap_factory = imap_factory or (lambda: imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT))
+    email_account = email_account or EMAIL
+    password = password or PASSWORD
+
+    mail = imap_factory()
+    mail.login(email_account, password)
     mail.select("INBOX")
 
     _, msgs = mail.search(None, "ALL")
@@ -50,11 +56,14 @@ def get_emails(count: int = 10) -> str:
     mail.logout()
     return result
 
-@mcp.tool()
-def get_email_body(index: int) -> str:
+def get_email_body_impl(index: int, *, imap_factory=None, email_account=None, password=None) -> str:
     """Inhalt einer bestimmten E-Mail abrufen (index = Nummer aus get_emails)"""
-    mail = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
-    mail.login(EMAIL, PASSWORD)
+    imap_factory = imap_factory or (lambda: imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT))
+    email_account = email_account or EMAIL
+    password = password or PASSWORD
+
+    mail = imap_factory()
+    mail.login(email_account, password)
     mail.select("INBOX")
 
     _, msgs = mail.search(None, "ALL")
@@ -76,5 +85,21 @@ def get_email_body(index: int) -> str:
 
     return f"Betreff: {decode_str(msg['Subject'])}\n\n{body}"
 
+@mcp.tool()
+@profile("email.get_emails")
+def get_emails(count: int = 10) -> str:
+    """Letzte E-Mails aus dem GMX Posteingang abrufen"""
+    return get_emails_impl(count)
+
+@mcp.tool()
+@profile("email.get_email_body")
+def get_email_body(index: int) -> str:
+    """Inhalt einer bestimmten E-Mail abrufen (index = Nummer aus get_emails)"""
+    return get_email_body_impl(index)
+
 if __name__ == "__main__":
-    mcp.run()
+    if "--test" in sys.argv:
+        print("[test] get_emails():")
+        print(get_emails_impl())
+    else:
+        mcp.run()

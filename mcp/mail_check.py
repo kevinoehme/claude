@@ -12,6 +12,7 @@ UID wird als Baseline gesetzt, sodass nur danach eintreffende Mails als
 import imaplib
 import email
 import os
+import sys
 from email.header import decode_header
 
 from mcp.server.fastmcp import FastMCP
@@ -24,8 +25,8 @@ module_load("mail_check")
 
 IMAP_HOST = "imap.gmx.net"
 IMAP_PORT = 993
-EMAIL    = os.environ["GMX_EMAIL"]
-PASSWORD = os.environ["GMX_PASSWORD"]
+EMAIL    = os.environ.get("GMX_EMAIL", "")
+PASSWORD = os.environ.get("GMX_PASSWORD", "")
 
 db.init_db()
 
@@ -49,38 +50,32 @@ def _fetch_uids_since(mail, since_uid: int | None) -> list[int]:
     if typ != "OK" or not data or not data[0]:
         return []
     uids = [int(x) for x in data[0].split()]
-    # IMAP "UID N:*" liefert auch UID N selbst zurück, falls keine größeren
-    # existieren — defensive Filterung:
     if since_uid is not None:
         uids = [u for u in uids if u > since_uid]
     return sorted(uids)
 
 
-@mcp.tool()
-@profile("mail_check.get_new_emails")
-def get_new_emails(max_report: int = 10) -> str:
-    """Neue E-Mails seit letzter Prüfung.
+def get_new_emails_impl(max_report: int = 10, *, imap_factory=None, db_connect=None, email_account=None, password=None) -> str:
+    """Neue E-Mails seit letzter Prüfung."""
+    imap_factory = imap_factory or (lambda: imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT))
+    db_connect = db_connect or db.connect
+    email_account = email_account or EMAIL
+    password = password or PASSWORD
 
-    Beim Erstlauf wird nur die Baseline gesetzt (gibt 'Baseline gesetzt' zurück).
-    Danach werden alle seither eingetroffenen Mails kompakt aufgelistet und der
-    Stand wird gespeichert. Maximal `max_report` Einträge im Output, der Counter
-    bleibt aber korrekt.
-    """
-    with db.connect() as con:
-        last_uid = db.get_last_seen_uid(con, EMAIL)
+    with db_connect() as con:
+        last_uid = db.get_last_seen_uid(con, email_account)
 
-    mail = imaplib.IMAP4_SSL(IMAP_HOST, IMAP_PORT)
+    mail = imap_factory()
     try:
-        mail.login(EMAIL, PASSWORD)
+        mail.login(email_account, password)
         mail.select("INBOX", readonly=True)
 
         new_uids = _fetch_uids_since(mail, last_uid)
 
         if last_uid is None:
-            # Erstlauf: Baseline auf höchste UID setzen, nichts reporten.
             baseline = max(new_uids) if new_uids else 0
-            with db.connect() as con:
-                db.set_last_seen_uid(con, EMAIL, baseline)
+            with db_connect() as con:
+                db.set_last_seen_uid(con, email_account, baseline)
             return f"📬 Baseline gesetzt (UID {baseline}). Ab jetzt werden neue Mails gemeldet."
 
         if not new_uids:
@@ -102,8 +97,8 @@ def get_new_emails(max_report: int = 10) -> str:
             lines.append(f"📧 {sender}")
             lines.append(f"   {subject}")
 
-        with db.connect() as con:
-            db.set_last_seen_uid(con, EMAIL, max(new_uids))
+        with db_connect() as con:
+            db.set_last_seen_uid(con, email_account, max(new_uids))
 
         return "\n".join(lines)
     finally:
@@ -113,14 +108,33 @@ def get_new_emails(max_report: int = 10) -> str:
             pass
 
 
+def reset_mail_baseline_impl(*, db_connect=None, email_account=None) -> str:
+    """Setzt die Baseline neu — nächster `get_new_emails`-Aufruf reportet erneut Erstlauf."""
+    db_connect = db_connect or db.connect
+    email_account = email_account or EMAIL
+
+    with db_connect() as con:
+        con.execute("DELETE FROM mail_state WHERE account = ?", (email_account,))
+    return f"📬 Baseline für {email_account} zurückgesetzt."
+
+
+@mcp.tool()
+@profile("mail_check.get_new_emails")
+def get_new_emails(max_report: int = 10) -> str:
+    """Neue E-Mails seit letzter Prüfung."""
+    return get_new_emails_impl(max_report)
+
+
 @mcp.tool()
 @profile("mail_check.reset_mail_baseline")
 def reset_mail_baseline() -> str:
     """Setzt die Baseline neu — nächster `get_new_emails`-Aufruf reportet erneut Erstlauf."""
-    with db.connect() as con:
-        con.execute("DELETE FROM mail_state WHERE account = ?", (EMAIL,))
-    return f"📬 Baseline für {EMAIL} zurückgesetzt."
+    return reset_mail_baseline_impl()
 
 
 if __name__ == "__main__":
-    mcp.run()
+    if "--test" in sys.argv:
+        print("[test] get_new_emails():")
+        print(get_new_emails_impl())
+    else:
+        mcp.run()
